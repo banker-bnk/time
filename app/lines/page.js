@@ -1,20 +1,19 @@
-// app/profile/page.js
 import { withPageAuthRequired, getAccessToken } from '@auth0/nextjs-auth0';
-import { getLines } from '../dao';
+import LinesContainer from '../../components/lines-container';
+import { getLines, getTurns } from '../../app/dao';
+import { decodeJWT } from '../../utils/decodeJWT';
 
-export default withPageAuthRequired(async function Lines() {
-	const { accessToken } = await getAccessToken();
-	const lines = await getLines(accessToken);
+export default withPageAuthRequired(async function LinesPage() {
+  const { accessToken } = await getAccessToken();
+  const linesData = await getLines(accessToken);
+  const turnsData = await getTurns(accessToken);
 
   return (
-    <div>
-      {lines.map(line => (
-        <div key={line.id}>
-          <h3>{line.id}</h3>
-          <p>Name: {line.name}</p>
-        </div>
-      ))}
-    </div>
+    <LinesContainer
+      accessToken={accessToken}
+      lines={linesData}
+      turns={turnsData}
+      userId={decodeJWT(accessToken).payload['https://hasura.io/jwt/claims']['x-hasura-user-id']}
+    />
   );
-}, { returnTo: '/lines' })
-// You need to provide a `returnTo` since Server Components aren't aware of the page's URL
+}, { returnTo: '/lines' });

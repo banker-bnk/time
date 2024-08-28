@@ -8,4 +8,3 @@ export default withPageAuthRequired(async function Profile() {
 
   return <div>Hello {user.name}</div>;
 }, { returnTo: '/' })
-// You need to provide a `returnTo` since Server Components aren't aware of the page's URL
