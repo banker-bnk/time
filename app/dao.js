@@ -1,4 +1,5 @@
 import { decodeJWT } from "../utils/decodeJWT";
+const admin_access_token = process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET;
 
 //----  LINES
 
@@ -33,7 +34,23 @@ export async function getTurns(access_token) {
 	return await response.data.turns;
 }
 
-export async function addLine(name, access_token) {
+export async function getManagedTurns(lineId, access_token) {
+	const query = `
+		query {
+			turns(where: { line_id: { _eq: ${lineId} }}) {
+				id
+				line_id
+				user_id
+				position
+			}
+		}
+	`;
+
+	const response = await fetchHasura(query, access_token, admin_access_token);
+	return await response.data.turns;
+}
+
+export async function addLine(name, access_token) {//TODO: remove decode and pass as param
 	const query = `
 		mutation {
 			insert_lines(
@@ -53,19 +70,25 @@ export async function addLine(name, access_token) {
 	return await response;
 }
 
-export async function addTurn(line_id, access_token) {
+export async function addTurn(line_id, access_token, previousPosition = undefined, nextPosition = undefined) {
 	const queryGetPosition = `
 		query {
 			turns_aggregate(where: {line_id: {_eq: ${line_id}}}) {
-			aggregate {
+				aggregate {
 					count
 				}
 			}
 		}
 	`;
 
-	const { data: { turns_aggregate: { aggregate: { count }} } } = await fetchHasura(queryGetPosition, access_token, process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET);
-	const newPosition = count + 1;
+	const { data: { turns_aggregate: { aggregate: { count }} } } = await fetchHasura(queryGetPosition, access_token, admin_access_token);
+
+	let newPosition;
+	if (previousPosition !== undefined && nextPosition !== undefined) {
+		newPosition = (previousPosition + nextPosition) / 2;
+	} else {
+		newPosition = count + 1;
+	}
 
     const queryAddTurn = `
         mutation {
@@ -86,6 +109,7 @@ export async function addTurn(line_id, access_token) {
     const response = await fetchHasura(queryAddTurn, access_token);
     return await response.data;
 }
+
 
 export async function removeLine(id, access_token) {
 	const query = `
@@ -109,8 +133,24 @@ export async function removeTurn(id, access_token) {
 		}
 	`;
 
-	const response = await fetchHasura(query, access_token);
+	const response = await fetchHasura(query, access_token, admin_access_token);
 	return await response.data;
+}
+
+export async function setCurrent(lineId, turnId, access_token) {	
+    const query = `
+        mutation {
+            update_lines(where: {id: {_eq: ${lineId}}}, _set: {current_position: ${turnId}}) {
+                returning {
+                    id
+                    current_position
+                }
+            }
+        }
+    `;
+
+    const response = await fetchHasura(query, access_token, admin_access_token);
+    return await response.data;
 }
 
 //---- HASURA

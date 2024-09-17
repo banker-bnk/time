@@ -4,7 +4,6 @@ import { withPageAuthRequired, getSession, getAccessToken } from '@auth0/nextjs-
 export default withPageAuthRequired(async function Profile() {
   const { user } = await getSession();
   const { accessToken } = await getAccessToken();
-  console.log('accessToken :>> ', accessToken);
 
   return <div>Hello {user.name}</div>;
 }, { returnTo: '/' })

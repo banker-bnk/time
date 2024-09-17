@@ -1,13 +1,14 @@
+//TODO: to be deleted (only reference)
 'use client';
 
 import { useState } from 'react';
-import { removeTurn, addTurn, getTurns } from '../app/dao';
 import Table from './generic-table';
 import AddLineForm from './add-line-form';
 
-export default function LinesContainer({ accessToken, lines, turns, userId }) {
+export default function LinesContainer({ accessToken, lines, userTurns, managedTurns, userId }) {
   const [linesState, setLinesState] = useState(lines);
-  const [turnsState, setTurnsState] = useState(turns);
+  const [turnsState, setTurnsState] = useState(userTurns);
+  const [managedTurnsState, setManagedTurnsState] = useState(managedTurns);
 
   const handleLineAdded = async () => {
     const getLinesResponse = await fetch('/api/lines', { method: 'GET' });
@@ -87,6 +88,26 @@ export default function LinesContainer({ accessToken, lines, turns, userId }) {
         actions={(row) => (
           <button
             onClick={() => handleLineDelete(row.id)}
+            className="text-red-500 hover:text-red-700"
+          >
+            Delete
+          </button>
+        )}
+      />
+
+      <br />
+
+      <h2 className="text-2xl font-bold mb-4">Your managed turns</h2>
+      <Table
+        columns={[
+          { header: 'Line ID', accessor: 'line_id' },
+          { header: 'Position', accessor: 'position' },
+          { header: 'User ID', accessor: 'user_id' },
+        ]}
+        data={managedTurnsState}
+        actions={(row) => (
+          <button
+            onClick={() => handleTurnDelete(row.id)}
             className="text-red-500 hover:text-red-700"
           >
             Delete
