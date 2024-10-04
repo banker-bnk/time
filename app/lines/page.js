@@ -1,20 +1,23 @@
-// app/profile/page.js
-import { withPageAuthRequired, getAccessToken } from '@auth0/nextjs-auth0';
-import { getLines } from '../dao';
+import { withPageAuthRequired, getAccessToken, getSession } from '@auth0/nextjs-auth0';
+import LinesContainer from "../../components/lines-container"
 
-export default withPageAuthRequired(async function Lines() {
-	const { accessToken } = await getAccessToken();
-	const lines = await getLines(accessToken);
+import { getLines, getManagedTurns, getTurns } from '../../app/dao';
+
+export default withPageAuthRequired(async function LinesPage() {
+  const { accessToken } = await getAccessToken();
+  const { user: { sub } } = await getSession();
+  const linesData = await getLines(accessToken);
+  const userTurnsData = await getTurns(accessToken);
+  const managedTurnsData = await getManagedTurns("99", accessToken); //de donde sacamos este lineId
 
   return (
-    <div>
-      {lines.map(line => (
-        <div key={line.id}>
-          <h3>{line.id}</h3>
-          <p>Name: {line.name}</p>
-        </div>
-      ))}
-    </div>
+    <LinesContainer 
+      accessToken={accessToken}
+      lines={linesData}
+      userTurns={userTurnsData}
+      managedTurns={managedTurnsData}
+      userId={sub}
+    />
   );
-}, { returnTo: '/lines' })
-// You need to provide a `returnTo` since Server Components aren't aware of the page's URL
+
+}, { returnTo: '/lines' });
