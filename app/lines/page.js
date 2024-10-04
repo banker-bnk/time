@@ -1,12 +1,16 @@
 import { withPageAuthRequired, getAccessToken, getSession } from '@auth0/nextjs-auth0';
 import LinesContainer from "../../components/lines-container"
 
-import { getLines, getManagedTurns, getTurns } from '../../app/dao';
+import { getLines, getLinesAll, getManagedTurns, getTurns } from '../../app/dao';
 
 export default withPageAuthRequired(async function LinesPage() {
   const { accessToken } = await getAccessToken();
   const { user: { sub } } = await getSession();
   const linesData = await getLines(accessToken);
+  const linesDataAll = await getLinesAll(accessToken);
+
+  console.log('lineDataAll :>> ', linesDataAll);
+
   const userTurnsData = await getTurns(accessToken);
   const managedTurnsData = await getManagedTurns("99", accessToken); //de donde sacamos este lineId
 

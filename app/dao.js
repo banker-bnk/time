@@ -18,6 +18,30 @@ export async function getLines(access_token) {
 	return await response.data.lines;
 }
 
+export async function getLinesAll(access_token) {
+	const query = `
+		query {
+			lines {
+				id
+				name
+				operator_id
+				current_position
+				created_at
+				turns {
+					id
+					user_id
+					position
+					joined_at
+				}
+			}
+		}
+	`;
+
+	const response = await fetchHasura(query, access_token);
+	return await JSON.stringify(response.data.lines);
+}
+
+
 export async function getTurns(access_token) {
 	const query = `
 		query {
