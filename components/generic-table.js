@@ -1,4 +1,3 @@
-//TODO: to be deleted (only reference)
 import React from 'react';
 
 export default function Table({ columns, data, actions }) {

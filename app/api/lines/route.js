@@ -1,11 +1,12 @@
-import { withApiAuthRequired, getAccessToken } from '@auth0/nextjs-auth0';
-import { addLine, getLines, removeLine } from "../../dao"
+import { withApiAuthRequired, getAccessToken, getSession } from '@auth0/nextjs-auth0';
+import { addLine, getLines } from "../../dao"
 
 export const POST = withApiAuthRequired(async function addLineRoute(req, res) {
     const { accessToken } = await getAccessToken();
+    const { user: { sub } } = await getSession();
     const reqBody = await req.json();
 
-    const addLineResponse = await addLine(reqBody.name, accessToken);
+    const addLineResponse = await addLine(reqBody.name, accessToken, sub);
     return new Response(JSON.stringify(addLineResponse));
 });
 

@@ -1,4 +1,3 @@
-//TODO: to be deleted (only reference)
 'use client';
 
 import { useState } from 'react';
@@ -117,7 +116,7 @@ export default function LinesContainer({ accessToken, lines, userTurns, managedT
 
       <br />
 
-      <AddLineForm accessToken={accessToken} onLineAdded={handleLineAdded} />
+      <AddLineForm onLineAdded={handleLineAdded} />
     </div>
   );
 }

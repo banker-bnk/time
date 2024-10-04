@@ -50,13 +50,13 @@ export async function getManagedTurns(lineId, access_token) {
 	return await response.data.turns;
 }
 
-export async function addLine(name, access_token) {//TODO: remove decode and pass as param
+export async function addLine(name, access_token, user_id) {
 	const query = `
 		mutation {
 			insert_lines(
 				objects: {
 					name: "${name}",
-					operator_id: "${decodeJWT(access_token).payload['https://hasura.io/jwt/claims']['x-hasura-user-id']}"
+					operator_id: "${user_id}"
 					}
 				) {
 					returning {

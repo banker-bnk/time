@@ -15,4 +15,4 @@ export const DELETE = withApiAuthRequired(async function deleteTurnRoute(req, { 
 
     const deleteTurnResponse = await removeTurn(id, accessToken);
     return new Response(JSON.stringify(deleteTurnResponse));
-});                                           sx
+});
