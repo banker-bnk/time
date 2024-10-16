@@ -2,9 +2,10 @@
 import { HomeIcon, BarsArrowUpIcon, QrCodeIcon } from "@heroicons/react/24/outline";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import User from "@/components/common/User";
+
 const MainNav = () => {
   return (
-    <div className="h-screen flex flex-col bg-black p-8 text-white">
+    <div className="fixed top-0 left-0 w-1/4 h-screen flex flex-col bg-gray-900 p-8 text-white overflow-y-auto">
       <div className="flex-grow">
         <strong className="block text-3xl mb-5">Time Project.</strong>
         <nav className="space-y-4">

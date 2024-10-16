@@ -19,7 +19,7 @@ const User = ({ useUser }) => {
           <div className="inline-block ml-2">
             Hola {user.user.name}
             <br />
-            <a href="/api/auth//logout" className="border border-white text-sm hover:bg-blue-600 hover:border-blue-600 transition-all duration-200 py-1 px-2 rounded">Logout</a>
+            <a href="/api/auth//logout" className="border mt-1 inline-block border-white text-sm hover:bg-blue-600 hover:border-blue-600 transition-all duration-200 py-1 px-2 rounded">Logout</a>
           </div>
         </div>
       )}
