@@ -4,7 +4,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import User from "@/components/common/User";
 const MainNav = () => {
   return (
-    <div className="h-screen flex flex-col dark:bg-blue-500 p-8 text-white">
+    <div className="h-screen flex flex-col bg-black p-8 text-white">
       <div className="flex-grow">
         <strong className="block text-3xl mb-5">Time Project.</strong>
         <nav className="space-y-4">

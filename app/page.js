@@ -1,5 +1,8 @@
 export default function Home() {
   return (
-      <p>la concha de tu madre</p>
+    <div>
+      <h1>Home</h1>
+      <p>Test</p>
+    </div>
   );
 }
