@@ -16,6 +16,29 @@ export async function getLines(access_token) {
 
 	const response = await fetchHasura(query, access_token);
 	return await response.data.lines;
+} 
+
+export async function getLine(id, access_token) {
+	const query = `
+		query {
+			lines_by_pk(id: ${id}) {
+				id
+				name
+				operator_id
+				current_position
+				created_at
+				turns {
+					id
+					user_id
+					position
+					joined_at
+				}
+			}
+		}
+	`;
+
+	const response = await fetchHasura(query, access_token);
+	return await response.data.lines_by_pk;
 }
 
 export async function getLinesAll(access_token) {
