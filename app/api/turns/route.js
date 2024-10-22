@@ -5,6 +5,7 @@ export const GET = withApiAuthRequired(async function getOwnTurnsRoute() {
     const { accessToken } = await getAccessToken();
 
     const getTurnsResponse = await getTurns(accessToken);
+    console.log(JSON.stringify(getTurnsResponse));
     return new Response(JSON.stringify(getTurnsResponse));
 });
 

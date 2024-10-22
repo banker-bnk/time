@@ -1,5 +1,5 @@
 import { withApiAuthRequired, getAccessToken } from '@auth0/nextjs-auth0';
-import { removeLine, setCurrent } from "../../../dao"
+import { removeLine, setCurrent, getLine } from "../../../dao"
 
 export const DELETE = withApiAuthRequired(async function deleteLineRoute(req, { params }) {
     const { accessToken } = await getAccessToken();
@@ -16,4 +16,13 @@ export const POST = withApiAuthRequired(async function setCurrentRoute(req, { pa
     const reqBody = await req.json();
     const setCurrentResponse = await setCurrent(id, reqBody.turnId, accessToken);
     return new Response(JSON.stringify(setCurrentResponse));
+});
+
+export const GET = withApiAuthRequired(async function getLineRoute(req, { params }) {
+    const { accessToken } = await getAccessToken();
+    const { id } = params;
+
+    const getLineResponse = await getLine(id, accessToken);
+
+    return new Response(JSON.stringify(getLineResponse));
 });
