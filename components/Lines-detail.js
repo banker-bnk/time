@@ -1,19 +1,31 @@
 "use client";
+import { QRCodeCanvas } from "qrcode.react";
+import { useEffect, useState } from 'react';
 
 export default function LineDetail({ line, turns }) {
-  console.log("DATA: " + JSON.stringify(line));
-  console.log("TURNS: " + JSON.stringify(turns));
-
-  // Filter turns to only include those that match the current line's ID
   const filteredTurns = turns.filter(turn => turn.line_id === line.id);
-  console.log("FTURNS: " + JSON.stringify(filteredTurns));
+
+  const [absoluteUrl, setAbsoluteUrl] = useState('');
+
+  useEffect(() => {
+    // Construct the absolute URL
+    const currentUrl = window.location.href;
+    setAbsoluteUrl(currentUrl);
+  }, []);
+  
+  console.log("URL: " + absoluteUrl);
 
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-xl font-bold">{line.name}</h2>
       <p className="text-gray-600">ID: {line.id}</p>
 
-      {/* Render the turns associated with this specific line */}
+      {/* Render QR code with the line.id */}
+      <div className="mt-4">
+        <h3 className="text-lg font-semibold">Line QR Code</h3>
+        <QRCodeCanvas value={absoluteUrl} size={128} />
+      </div>
+
       {filteredTurns.length > 0 && (
         <div className="mt-4">
           <h3 className="text-lg font-semibold">Turns</h3>
