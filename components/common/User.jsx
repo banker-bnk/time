@@ -2,7 +2,6 @@ import Image from "next/image";
 
 const User = ({ useUser }) => {
   const user = useUser();
-  console.log(user);
   const session = user.user?.sub ? true : false;
   return (
     <div className="w-full block">

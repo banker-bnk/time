@@ -21,4 +21,4 @@ export default withPageAuthRequired(async function LinesPage() {
     />
   );
 
-}, { returnTo: '/lines' });
+}, { returnTo: '/my-lines' });

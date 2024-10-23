@@ -102,12 +102,13 @@ export async function addLine(name, access_token, user_id) {
 		mutation {
 			insert_lines(
 				objects: {
-					name: "${name}",
-					operator_id: "${user_id}"
+						name: "${name}",
+						operator_id: "${user_id}"
 					}
 				) {
 					returning {
-						id
+						id,
+						position
 				}
 			}
 		}
